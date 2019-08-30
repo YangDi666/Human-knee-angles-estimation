@@ -1,5 +1,7 @@
-# Pose Estimation (Deep learning)
-## LCRNet Video Processing
+
+# Knee angles estimation
+## I. Pose Estimation (Deep learning)
+### LCRNet Video Processing
 
 Based on https://thoth.inrialpes.fr/src/LCR-Net/
 
@@ -12,15 +14,15 @@ Demo predict should be executed inside the cluster. It creates from a source (.m
 
 Demo show should be executed locally. It creates, from the original source (.mp4 video) and the previously generated .json file a new video called {source}_detected.mp4 with the original video annotated with the skeleton in 2D and 3D.
 
-### Cluster installation with Conda
+#### Cluster installation with Conda
 
-#### Log in to cluster
+##### Log in to cluster
 
 ```bash
 ssh nef-devel2
 ```
 
-#### Install miniconda and create environment
+##### Install miniconda and create environment
 
 ```bash
 # download
@@ -31,7 +33,7 @@ bash Miniconda3-latest-Linux-x86_64.sh
 conda create -n lcrnet python=3.6
 ```
 
-#### Download and install  LCR-Net (v2.0)
+##### Download and install  LCR-Net (v2.0)
 
 ```bash
 # download Detectron.pytorch
@@ -90,7 +92,7 @@ cd ../../lcrnet-videoprocessing
 ln -s ../Detectron.pytorch/
 ```
 
-#### Test installation
+##### Test installation
 
 ```bash
 # still inside the node
@@ -99,9 +101,9 @@ python3 demo-predict.py InTheWild-ResNet50 test/testvideo.mp4 0
 ```
 Once the process is finished, you should see the resulting json file with the 2d and 3d poses for each frame of the video, both displayed in the console and saved into the test folder as testvideo.json
 
-### Process videos
+#### Process videos
 
-#### Perform prediction in the cluster
+##### Perform prediction in the cluster
 
 The prediction is done with a pretrained model, downloaded automatically by the script. 
 
@@ -130,7 +132,7 @@ oarsub -S "lcrnet-videoprocessing/job.oar {source}.mp4 {modelname}"
 
 After the job is finished you should find the generated {source}.json file in the lcrnet-videoprocessing folder.  Check the log files (OAR*.stdout and OAR*.stderr) for the job progress and error.
 
-#### Install lcrnet-videoprocessing locally
+##### Install lcrnet-videoprocessing locally
 
 To join the videos and the obtained skeleton locally, you will need to download the lcrnet-videoprocessing project and install the demo-show dependencies. No gpu is needed for this step.
 
@@ -141,7 +143,7 @@ Dependencies:
 - matplotlib
 - tqdm
 
-#### Create the annotated video
+##### Create the annotated video
 
 ```bash
 # copy the json file from the cluster
@@ -154,67 +156,72 @@ python3 demo-show.py {source}.mp4
 The result will be displayed while creating the video, and will finally be saved under the name {source}_detected.mp4
  
 
-# OpenPose 
+### OpenPose 
 
-## Download
+#### Download
 
+```bash
 git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
-
-## Installation  
+```
+#### Installation  
 
 https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start
 
-## Run model on the NEF at Inria :
+#### Run model on the NEF at Inria : 
 
+```bash
 module use --append /home/mkopersk/share/modules
 module load cuda/8.0
 module load cudnn/5.1-cuda-8.0
 module load opencv2/no_python_with_gpu
 module load Caffe/open_pose
+```
 
 Then you can notice that if you just type: openpose.bin command is available so you can just type:
 openpose.bin  -help
 
-Example1 : 
-
+```bash
+# Example1 : 
 openpose.bin --image_dir ~/workspace/videos/group_meeting_presentaiton/Drink.Fromcup_p06_r02_v09_c01/ -model_folder /home/mkopersk/3rdParty/open_pose/openpose/models/ --model_pose COCO --net_resolution 656x496 --scale_number 4 --scale_gap 0.25
 
-Example2 : Save results, and turn off the display
-
+# Example2 : Save results, and turn off the display
 openpose.bin --image_dir ~/workspace/videos/group_meeting_presentaiton/Drink.Fromcup_p06_r02_v09_c01/ -model_folder /home/mkopersk/3rdParty/open_pose/openpose/models/ --model_pose COCO --net_resolution 656x496 --scale_number 4 --scale_gap 0.25 -write_keypoint_json ~/workspace/videos/ouput/ --no_display
+```
 
+### PifPaf
 
-# PifPaf
-
-## Download
-
+#### Download
+```bash
 - git clone https://github.com/vita-epfl/openpifpaf.git
-
-## Installation 
+```
+#### Installation 
 
 https://github.com/vita-epfl/openpifpaf#Install
 
-## install dependencies
+#### install dependencies
 
+```bash
 - source activate pifpaf
 
 - pip3 install openpifpaf
 - pip3 install numpy cython
 - pip3 install --editable '.[train,test]'
+```
 
-## Videos
+### Videos
 
+```bash
 export VIDEO=video.avi  # change to your video file
 mkdir ${VIDEO}.images
 ffmpeg -i ${VIDEO} -qscale:v 2 -vf scale=641:-1 -f image2 ${VIDEO}.images/%05d.jpg
 python3 -m openpifpaf.predict --checkpoint resnet152 ${VIDEO}.images/*.jpg
 ffmpeg -framerate 24 -pattern_type glob -i ${VIDEO}.images/'*.jpg.skeleton.png' -vf scale=640:-2 -c:v libx264 -pix_fmt yuv420p ${VIDEO}.pose.mp4
+```
 
+## II. Knee Angles Estimation
 
-# Knee Angles Estimation
-
-## File storage : 
-
+### File storage : 
+```bash
 - testVideos
     --test1
         ---...C.mp4
@@ -225,16 +232,18 @@ ffmpeg -framerate 24 -pattern_type glob -i ${VIDEO}.images/'*.jpg.skeleton.png' 
     --test2
     --test3
     --...
-
-## Walking models
+```
+### Walking models
 
 We can run the "run_model.sh" for the knee angles estimation based on the 2D pose of LCR-NET, OpenPose or PifPaf
-
+```bash
 Usage : ./run_model.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/OpenPose/PifPaf)> <model(Angles/Angles+/Angles++)> <showfiguers(True/False)> <filter type(gaussian/mean/median/no)> <filter size>
 
-- example1 : ./run_model.sh 1 50 150 LCR-NET Angles++ True gaussian 5  (if you run the "Angles++" model you should add the last 2 parameters)
-- example2 : ./run_model.sh 1 50 150 OpenPose Angles False
-
+- # example1 : 
+./run_model.sh 1 50 150 LCR-NET Angles++ True gaussian 5  (if you run the "Angles++" model you should add the last 2 parameters)
+- # example2 : 
+./run_model.sh 1 50 150 OpenPose Angles False
+```
 then we can get the result (file.csv) :
 
 - 1536334071006611046_LCR-NET_joints_2DColor_front
@@ -247,7 +256,7 @@ then we can get the result (file.csv) :
 - ...
 - ...
 
-## Display the results
+### Display the results
 
 To show the results of the models and the pose estimation, you can run "3Dshow.sh"after running "run_modle.sh" then you can see the different colors represent different result :
 - orange : primitive LCR-NET 
@@ -257,21 +266,23 @@ To show the results of the models and the pose estimation, you can run "3Dshow.s
 - black : GT respective transformation
 - purple in 3D : the result of walking model (Angle/Angle+/Angles++)
 
+```bash
 Usage : ./3Dshow.sh <nb_video> <frame> <algo(LCR-NET/OpenPose/PifPaf)> <GTcalibrated?(True/False)> 
 
-- example : ./3Dshow.sh 2 104 LCR-NET False
-
-## Exploration
+- # example : 
+./3Dshow.sh 2 104 LCR-NET False
+```
+### Exploration
 
 There are some script during the exploration of Angles+ and Angles++
 
-### Angles+ 
+#### Angles+ 
 - hist_image.py : it can draw a histogram for a joints. Usage : <nb_video> <frame> <size> <joint(lankle/rankle/lknee/rknee/lthi/rthi)> 
 - hist_img.py : this code is for draw a image which represent the histogram of a entire video. Usage : <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
 - histogram.py : this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both. Usage : <nb_video> <size for histogram> <size for median>
 
 
-### Angles++ 
+#### Angles++ 
 - findwrong.py : we can detect the bad frames by the walking model. Usage : python3 findwrong.py <nb_video> <direction(front/back)> <showfigures> ex : 1 front True')
 - correcte.py : walking model for correcting the bad frames. Usage: python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True')
    
