@@ -240,8 +240,7 @@ We can run the "run_model.sh" for the knee angles estimation based on the 2D pos
 Usage : ./run_model.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/OpenPose/PifPaf)> <model(Angles/Angles+/Angles++)> <showfiguers(True/False)> <filter type(gaussian/mean/median/no)> <filter size>
 
 - # example1 : 
-./run_model.sh 1 50 150 LCR-NET Angles++ True gaussian 5  (if you run the "Angles++" model you should add the last 2 parameters)
-
+./run_model.sh 1 50 150 LCR-NET Angles++ True gaussian 5  # (if you run the "Angles++" model you should add the last 2 parameters)
 - # example2 : 
 ./run_model.sh 1 50 150 OpenPose Angles False
 ```
