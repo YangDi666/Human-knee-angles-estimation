@@ -1,5 +1,9 @@
 # Knee Angles Estimation
+
 ## I. Pose Estimation (Deep learning)
+
+The part I has been done at inria with GPU and many independencies, if you want to process the deep learning with your own PC, you can do as the following steps.
+
 ### 1. LCRNet Video Processing
 
 Based on https://thoth.inrialpes.fr/src/LCR-Net/
@@ -322,3 +326,4 @@ Usage : ./calibration.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/Open
 ### 5. Contact
 
 - yangdi9860@gmail.com
+- 06 67 03 36 01

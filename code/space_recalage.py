@@ -1,3 +1,8 @@
+# Space calibration
+# ! You should run it after time_recalage
+# Usage : python3 space_recalage.py <nb_video> <direction(f/b)> <frame_begin> <frame_end> <algo> <showfigures(True/False)>
+
+
 import pandas as pd
 import matplotlib.pylab as plt
 import numpy as np
@@ -6,58 +11,51 @@ import sys
 import cv2
 from mpl_toolkits.mplot3d import Axes3D
 import json
-import tools
+import tools_lcr
 from tqdm import tqdm
 import os
 import pandas as pd
 import re
 from scipy import signal
-# xianshi zai tong yi ge tushang
-#hengzuobiaotoushi t(ms)
 
 
-def space_recalage(nb_video, aix, frames, direction):
+def space_recalage(nb_video, aix, frames, direction, algo, show):
     articulations=['ak','kn','as','wr','el','sh']
-    if int(nb_video)<=14:
-        if direction=='f':
-            keywords_file12='julia'+str(100+2*int(nb_video))+'.*'
-        else:
-            keywords_file12='julia'+str(101+2*int(nb_video))+'.*'
-    else:
-        if direction=='f':
-            keywords_file12='hugo'+str(100+2*(int(nb_video)-14))+'.*'
-        else:
-            keywords_file12='hugo'+str(101+2*(int(nb_video)-14))+'.*'
-    files=os.listdir('testVedios/test'+nb_video+'/') 
+    files=os.listdir('testVideos/test'+nb_video+'/') 
+
     for i in files:
-        if (len(re.findall('.*joints_3DKinect_'+direction+'ront.csv', i))!=0):
-            fileank=i
-        if (len(re.findall(keywords_file12+'left', i))!=0):
+        if direction=='f':
+            if (len(re.findall('.*'+algo+'_joints_3DKinect_'+direction+'ront.csv', i))!=0):
+                fileank=i
+        else:
+            if (len(re.findall('.*'+algo+'_joints_3DKinect_'+direction+'ack.csv', i))!=0):
+                fileang=i
+                
+        if (len(re.findall('gt_.*\_left_'+direction+'.csv', i))!=0):
             filename1=i
-        if (len(re.findall(keywords_file12+'right', i))!=0):
+        if (len(re.findall('gt_.*\_right_'+direction+'.csv', i))!=0):
             filename2=i
         if (len(re.findall('tempstams_.*\.csv', i))!=0):
-            filetime=i   
+            filetime=i  
+
     print(fileank, filename1, filename2, filetime)
-    timestamps=np.array(pd.read_csv('testVedios/test'+nb_video+'/'+filetime))
+    timestamps=np.array(pd.read_csv('testVideos/test'+nb_video+'/'+filetime))
     time=[0]
     for t in timestamps:
         time.append((t[0]-44471900000))
     fig=plt.figure()
     ax=fig.add_subplot(211)
     ax2=fig.add_subplot(212)
-    anks=pd.DataFrame(pd.read_csv('testVedios/test'+nb_video+'/'+fileank))
-    data1=pd.DataFrame(pd.read_csv('testVedios/test'+nb_video+'/'+filename1))
-    data2=pd.DataFrame(pd.read_csv('testVedios/test'+nb_video+'/'+filename2))
+    anks=pd.DataFrame(pd.read_csv('testVideos/test'+nb_video+'/'+fileank))
+    data1=pd.DataFrame(pd.read_csv('testVideos/test'+nb_video+'/'+filename1))
+    data2=pd.DataFrame(pd.read_csv('testVideos/test'+nb_video+'/'+filename2))
 
     output={}
-    with open('../../semaine11/time calibration/testVideos/test'+nb_video+'/time_recalage_general.json') as json_data:
-        #with open('testVedios/test'+nb_video+'/time_recalage.json') as json_data:
+    #with open('../../semaine11/time calibration/testVideos/test'+nb_video+'/time_recalage_general.json') as json_data:
+    with open('testVideos/test'+nb_video+'/'+algo+'_time_recalage_'+direction+'.json') as json_data:
         jsondata = json.load(json_data)
-    if direction=='f':
-        dt=jsondata['dt1']
-    else:
-        dt=jsondata['dt2']
+ 
+    dt=jsondata['dt']
     print('dt:',dt)
       
     for arts in articulations: 
@@ -140,7 +138,7 @@ def space_recalage(nb_video, aix, frames, direction):
         
         t1=[i-dt for i in t1]
         for d in range(-4000, 5000, 50):
-            errsl.append(tools.comps(t1, anklesl, fieldl, ankle_l, d))
+            errsl.append(tools_lcr.comps(t1, anklesl, fieldl, ankle_l, d))
             dy.append(d)
         fig3=plt.figure()
         ax3=fig3.add_subplot(211)
@@ -151,32 +149,32 @@ def space_recalage(nb_video, aix, frames, direction):
         errsl=[]
         dy=[]
         for d in range(dt_best_l-80, dt_best_l+80):
-            errsl.append(tools.comps(t1, anklesl, fieldl, ankle_l, d))
+            errsl.append(tools_lcr.comps(t1, anklesl, fieldl, ankle_l, d))
             dy.append(d)
         ax4=fig3.add_subplot(212)
         ax4.set_xlabel('d'+aix)
         ax4.set_ylabel('Err')
         ax4.plot(dy, errsl, marker='.')
         dy_best_l=dy[errsl.index(min(errsl))]
-        errmin_l=tools.comps(t1, anklesl, fieldl, ankle_l, dy_best_l, True)
+        errmin_l=tools_lcr.comps(t1, anklesl, fieldl, ankle_l, dy_best_l, True)
         print(arts, ' left d'+aix+': ', dy_best_l, 'Err : ', min(errsl))
         
         errsr=[]
         dy=[]
         for d in range(-4000, 5000, 50):
-            errsr.append(tools.comps(t1, anklesr, fieldr, ankle_r, d))
+            errsr.append(tools_lcr.comps(t1, anklesr, fieldr, ankle_r, d))
             dy.append(d)
         ax3.plot(dy, errsr, marker='.')
         dt_best_r=dy[errsr.index(min(errsr))]
         errsr=[]
         dy=[]
         for d in range(dt_best_r-80, dt_best_r+80):
-            errsr.append(tools.comps(t1, anklesr, fieldr, ankle_r, d))
+            errsr.append(tools_lcr.comps(t1, anklesr, fieldr, ankle_r, d))
             dy.append(d)
         ax4.plot(dy, errsr, marker='.')
         dy_best_r=dy[errsr.index(min(errsr))]
 
-        errmin_r=tools.comps(t1, anklesr, fieldr, ankle_r, dy_best_r, True)
+        errmin_r=tools_lcr.comps(t1, anklesr, fieldr, ankle_r, dy_best_r, True)
         print(arts, ' right d'+aix+': ', dy_best_r, 'Err : ', min(errsr))
         output['r'+arts]=[dy_best_r, min(errsr)]
         output['l'+arts]=[dy_best_l, min(errsl)]
@@ -186,37 +184,32 @@ def space_recalage(nb_video, aix, frames, direction):
             dm_l.remove(l)
     dm=sum(dm_l)/len(dm_l)
     print('Mean : ', dm)
-    #plt.show()
+    if show=='True':
+        plt.show()
     return output, dm
    
-
+print("Usage : python3 space_recalage.py <nb_video> <direction(f/b)> <frame_begin> <frame_end> <algo> <showfigures(True/False)>")
 frames=[int(sys.argv[3]),int(sys.argv[4])]
 nb_video=sys.argv[1]
 direction=sys.argv[2]
+algo=sys.argv[5]
+show=sys.argv[6]
+
 outjson={}
 
-output, dXm=space_recalage(nb_video, 'X', frames, direction)
+output, dXm=space_recalage(nb_video, 'X', frames, direction, algo, show)
 outjson['dX']=output
 outjson['dXm']=dXm
-output, dYm=space_recalage(nb_video, 'Y', frames, direction)
+output, dYm=space_recalage(nb_video, 'Y', frames, direction, algo, show)
 outjson['dY']=output
 outjson['dYm']=dYm
-output, dZm=space_recalage(nb_video, 'Z', frames, direction)
+output, dZm=space_recalage(nb_video, 'Z', frames, direction, algo, show)
 outjson['dZ']=output
 outjson['dZm']=dZm
 print(outjson)
 if direction=='b':
-    with open('testVedios/test'+nb_video+'/space_recalage_back.json', 'w') as json_out:
+    with open('testVideos/test'+nb_video+'/space_recalage_back_'+algo+'.json', 'w') as json_out:
         json.dump(outjson, json_out)
 else:
-    with open('testVedios/test'+nb_video+'/space_recalage.json', 'w') as json_out:
+    with open('testVideos/test'+nb_video+'/space_recalage_front_'+algo+'.json', 'w') as json_out:
         json.dump(outjson, json_out)
-
-'''
-    with open('testVedios/test'+nb_video+'/space_recalage.json') as json_data:
-        jsondata = json.load(json_data)
-    jsondata['dt1']=dt_best
-    jsondata['err1']=min(errs)
-    with open('testVedios/test'+nb_video+'/time_recalage.json', 'w') as outfile:
-        json.dump(jsondata, outfile)
-'''
