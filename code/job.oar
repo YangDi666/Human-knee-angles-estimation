@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#OAR -p gpu='YES' and gpucapability>='5.0' and gpumem>=11000
+#OAR -l /nodes=1/gpunum=1,walltime=02:00:00
+
+
+cd $HOME/LCRNet_v2.0
+
+source activate mora
+
+module load cuda/9.1
+module load cudnn/7.0-cuda-9.1
+module load gcc/6.2.0
+
+
+img=$1
+model=$2
+
+if [ -z "$img" ]; then
+	img="Directions1_S11_C1_1.jpg"
+fi
+
+if [ -z "$model" ]; then
+	model="InTheWild-ResNet50"
+fi
+
+echo "img $img"
+echo "model $model"
+
+python demo-predict.py $model $img 0
+
+# Install in cluster with modules cuda/9.1, cudnn/7.0-cuda-9.1 and gcc/6.2.0
+# Conda install all of the requirements

@@ -1,0 +1,160 @@
+
+oarsub -p "gpu='YES' and dedicated='stars'" -l/nodes=1/gpunum=1,walltime=1 -I
+source activate /home/rdai/anaconda3/envs/lcrnet
+cd di/lcrnet-videoprocessing-master1
+
+# load modules
+module load cuda/9.1
+module load cudnn/7.0-cuda-9.1
+module load gcc/6.2.0
+
+cd Detectron.pytorch/lib
+sh make.sh
+cd ..
+cd ..
+python3 demo-predict.py InTheWild-ResNet50 test/testvideo.mp4 0
+python3 demo-show.py test/testvideo.mp4
+
+#test for ekinnox
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test1/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test1/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test1/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test1/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test1/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test2/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test2/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test2/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test2/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test2/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test3/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test3/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test3/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test3/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test3/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test4/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test4/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test4/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test4/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test4/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test5/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test5/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test5/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test5/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test5/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test6/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test6/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test6/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test6/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test6/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test7/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test7/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test7/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test7/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test7/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test8/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test8/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test8/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test8/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test8/301.jpg 0
+
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test9/101.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test9/121.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test9/1.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test9/201.jpg 0
+python3 demo-predict.py InTheWild-ResNet50 test/videos_ekinnox/test9/301.jpg 0
+
+
+
+python3 demo-show2.py test/videos_ekinnox/test1/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test1/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test1/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test1/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test1/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test2/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test2/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test2/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test2/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test2/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test3/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test3/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test3/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test3/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test3/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test4/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test4/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test4/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test4/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test4/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test5/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test5/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test5/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test5/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test5/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test6/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test6/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test6/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test6/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test6/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test7/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test7/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test7/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test7/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test7/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test8/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test8/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test8/1.jpg
+python3 demo-show2.py test/videos_ekinnox/test8/201.jpg
+python3 demo-show2.py test/videos_ekinnox/test8/301.jpg
+
+python3 demo-show2.py test/videos_ekinnox/test9/101.jpg
+python3 demo-show2.py test/videos_ekinnox/test9/121.jpg
+python3 demo-show2.py test/videos_ekinnox/test9/1.jpg
+
+scp dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test21/1536337311845162657C.json /user/dyang/home/yd/json
+
+
+python3 csvWriter.py 5 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test5/1536334151240767284C_time.json
+python3 csvWriter.py 6 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test6/1536334169154147506C_time.json
+python3 csvWriter.py 7 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test7/1536334184506968991C_time.json 
+python3 csvWriter.py 8 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test8/1536334207674125890C_time.json
+python3 csvWriter.py 9 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test9/1536334229306590336C_time.json 
+python3 csvWriter.py 10 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test10/1536334245959331240C_time.json
+python3 csvWriter.py 11 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test11/1536334260107495706C_time.json /user/dyang/home/yd
+python3 csvWriter.py 12 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test12/1536334281383043053C_time.json
+python3 csvWriter.py 13 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test13/1536334299059276571C_time.json /user/dyang/home/
+python3 csvWriter.py 14 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test14/1536334320191167068C_time.json /user/dyang/home
+python3 csvWriter.py 15 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test15/1536337204311563544C_time.json /user/dyang/home/
+python3 csvWriter.py 16 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test16/1536337225609283198C_time.json /user/dyang/home/y
+python3 csvWriter.py 17 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test17/1536337243150682832C_time.json /user/dyang/home/
+python3 csvWriter.py 18 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test18/1536337259443320746C_time.json /user/dyang/home/y
+python3 csvWriter.py 19 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test19/1536337276417663687C_time.json /user/dyang/home/
+python3 csvWriter.py 20 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test20/1536337292971233969C_time.json /user/dyang/home
+python3 csvWriter.py 21 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test21/1536337311845162657C_time.json /user/dyang/home/
+python3 csvWriter.py 22 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test22/1536337333284055951C_time.json
+python3 csvWriter.py 23 dyang@nef-devel1536337353363314906C
+python3 csvWriter.py 24 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test24/1536337366508822069C_time.json
+python3 csvWriter.py 25 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test25/1536337378342627817C_time.json
+python3 csvWriter.py 26 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test26/1536337396958617272C_time.json
+python3 csvWriter.py 27 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test27/1536337410120487142C_time.json
+python3 csvWriter.py 28 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test28/1536337433876106176C_time.json
+python3 csvWriter.py 29 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test29/1536337456377958600C_time.json
+python3 csvWriter.py 30 dyang@nef-devel.inria.fr:di/lcrnet-videoprocessing-master1/test/testVedios/test30/1536337491841406413C_time.json
+
+
+
+
+
