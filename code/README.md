@@ -269,7 +269,6 @@ To show the results of the models and the pose estimation, you can run "3Dshow.s
 
 ```bash
 Usage : ./3Dshow.sh <nb_video> <frame> <algo(LCR-NET/OpenPose/PifPaf)> <GTcalibrated?(True/False)> 
-
 - # example : 
 ./3Dshow.sh 2 104 LCR-NET False
 ```
@@ -282,10 +281,8 @@ There are some script during the exploration of Angles+ and Angles++
 ```bash
 - python3 hist_image.py <nb_video> <frame> <size> <joint(lankle/rankle/lknee/rknee/lthi/rthi)> 
   # it can draw a histogram for a joints. 
-
-- python3 hist_img.py <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
-  # this code is for draw a image which represent the histogram of a entire video. 
-
+- python3 hist_img.py <nb_video> <right/left> <size> 
+  # this code is for draw a image which represent the histogram of a entire video and you can see the image of right/left ankle, hip and knee.
 - python3 histogram.py <nb_video> <size for histogram> <size for median>
   # this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both of them.
 ```
@@ -294,7 +291,6 @@ There are some script during the exploration of Angles+ and Angles++
 ```bash
 - python3 findwrong.py <nb_video> <direction(front/back)> <showfigures> ex : 1 front True
   # we can detect the bad frames by the walking model.
-  
 - python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True
   # walking model for correcting the bad frames. 
 ```
