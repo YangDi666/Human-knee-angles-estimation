@@ -280,16 +280,21 @@ There are some script during the exploration of Angles+ and Angles++
 
 #### Angles+ 
 ```bash
-- hist_image.py : it can draw a histogram for a joints. Usage : <nb_video> <frame> <size> <joint(lankle/rankle/lknee/rknee/lthi/rthi)> 
+- python3 hist_image.py <nb_video> <frame> <size> <joint(lankle/rankle/lknee/rknee/lthi/rthi)> 
+  # it can draw a histogram for a joints. 
 
-- hist_img.py : this code is for draw a image which represent the histogram of a entire video. Usage : <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
+- python3 hist_img.py <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
+  # this code is for draw a image which represent the histogram of a entire video. 
 
-- histogram.py : this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both. Usage : <nb_video> <size for histogram> <size for median>
+- python3 histogram.py <nb_video> <size for histogram> <size for median>
+  # this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both of them.
 ```
 
 #### Angles++ 
 ```bash
-- findwrong.py : we can detect the bad frames by the walking model. Usage : python3 findwrong.py <nb_video> <direction(front/back)> <showfigures> ex : 1 front True')
-
-- correcte.py : walking model for correcting the bad frames. Usage: python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True')
+- python3 findwrong.py <nb_video> <direction(front/back)> <showfigures> ex : 1 front True
+  # we can detect the bad frames by the walking model.
+  
+- python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True
+  # walking model for correcting the bad frames. 
 ```
