@@ -326,4 +326,3 @@ Usage : ./calibration.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/Open
 ### 5. Contact
 
 - yangdi9860@gmail.com
-- 06 67 03 36 01
