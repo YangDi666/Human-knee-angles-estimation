@@ -1,0 +1,7 @@
+models/
+__pycache__/
+*.jpg
+*.mp4
+*.png
+*.json
+!test/*
