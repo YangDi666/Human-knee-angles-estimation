@@ -1,7 +1,7 @@
 
-# Knee angles estimation
+# Knee Angles Estimation
 ## I. Pose Estimation (Deep learning)
-### LCRNet Video Processing
+### 1. LCRNet Video Processing
 
 Based on https://thoth.inrialpes.fr/src/LCR-Net/
 
@@ -156,7 +156,7 @@ python3 demo-show.py {source}.mp4
 The result will be displayed while creating the video, and will finally be saved under the name {source}_detected.mp4
  
 
-### OpenPose 
+### 2. OpenPose 
 
 #### Download
 
@@ -188,7 +188,7 @@ openpose.bin --image_dir ~/workspace/videos/group_meeting_presentaiton/Drink.Fro
 openpose.bin --image_dir ~/workspace/videos/group_meeting_presentaiton/Drink.Fromcup_p06_r02_v09_c01/ -model_folder /home/mkopersk/3rdParty/open_pose/openpose/models/ --model_pose COCO --net_resolution 656x496 --scale_number 4 --scale_gap 0.25 -write_keypoint_json ~/workspace/videos/ouput/ --no_display
 ```
 
-### PifPaf
+### 3. PifPaf
 
 #### Download
 ```bash
@@ -220,7 +220,7 @@ ffmpeg -framerate 24 -pattern_type glob -i ${VIDEO}.images/'*.jpg.skeleton.png' 
 
 ## II. Knee Angles Estimation
 
-### File storage : 
+### 1. File storage : 
 ```bash
 - testVideos
     --test1
@@ -233,7 +233,7 @@ ffmpeg -framerate 24 -pattern_type glob -i ${VIDEO}.images/'*.jpg.skeleton.png' 
     --test3
     --...
 ```
-### Walking models
+### 2. Walking models
 
 We can run the "run_model.sh" for the knee angles estimation based on the 2D pose of LCR-NET, OpenPose or PifPaf
 ```bash
@@ -241,6 +241,7 @@ Usage : ./run_model.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/OpenPo
 
 - # example1 : 
 ./run_model.sh 1 50 150 LCR-NET Angles++ True gaussian 5  (if you run the "Angles++" model you should add the last 2 parameters)
+
 - # example2 : 
 ./run_model.sh 1 50 150 OpenPose Angles False
 ```
@@ -256,7 +257,7 @@ then we can get the result (file.csv) :
 - ...
 - ...
 
-### Display the results
+### 3. Display the results
 
 To show the results of the models and the pose estimation, you can run "3Dshow.sh"after running "run_modle.sh" then you can see the different colors represent different result :
 - orange : primitive LCR-NET 
@@ -272,17 +273,23 @@ Usage : ./3Dshow.sh <nb_video> <frame> <algo(LCR-NET/OpenPose/PifPaf)> <GTcalibr
 - # example : 
 ./3Dshow.sh 2 104 LCR-NET False
 ```
-### Exploration
+
+### 4. Exploration
 
 There are some script during the exploration of Angles+ and Angles++
 
 #### Angles+ 
+```bash
 - hist_image.py : it can draw a histogram for a joints. Usage : <nb_video> <frame> <size> <joint(lankle/rankle/lknee/rknee/lthi/rthi)> 
-- hist_img.py : this code is for draw a image which represent the histogram of a entire video. Usage : <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
-- histogram.py : this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both. Usage : <nb_video> <size for histogram> <size for median>
 
+- hist_img.py : this code is for draw a image which represent the histogram of a entire video. Usage : <nb_video> <right/left> <size> and you can see the image of right/left ankle, hip, knee.
+
+- histogram.py : this code is for comparaing the value selection method id depth map : median or the maxum of the histogram or both. Usage : <nb_video> <size for histogram> <size for median>
+```
 
 #### Angles++ 
+```bash
 - findwrong.py : we can detect the bad frames by the walking model. Usage : python3 findwrong.py <nb_video> <direction(front/back)> <showfigures> ex : 1 front True')
+
 - correcte.py : walking model for correcting the bad frames. Usage: python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True')
-   
+```
