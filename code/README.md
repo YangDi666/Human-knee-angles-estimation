@@ -1,4 +1,3 @@
-
 # Knee Angles Estimation
 ## I. Pose Estimation (Deep learning)
 ### 1. LCRNet Video Processing
@@ -293,3 +292,24 @@ There are some script during the exploration of Angles+ and Angles++
 - python3 correcte.py <nb_video> <direction(front/back)> <filter(gaussian/mean/median)> <filter kernel size> <showfigures> ex : 1 front gaussian 5 True
   # walking model for correcting the bad frames. 
 ```
+### 4. Quantitative analysis
+
+- The first thing is time and space calibration, you should firstly divide the vicon file into 4 and put them in the folder like the first test in "testVideos/test1"
+File name : "gt_{video id}_left(or right)_{direction}.csv" for all left joints in during walking front
+You can see the example in test1 : "gt_1536334071006611046_left_f.csv", "gt_1536334071006611046_right_f.csv", "gt_1536334071006611046_left_b.csv", "gt_1536334071006611046_right_b.csv"
+
+- Then you should put the timestamp file in the folder like "tempstams_1536334071006611046.csv"
+
+- After putting all these 5 files in the folder, you can run the "calibration.sh" for getting the quantitative errors:
+
+```bash
+Usage : ./calibration.sh <nb_video> <frame_begin> <frame_end> <algo(LCR-NET/OpenPose/PifPaf)> <direction(f/b)> <show figures> # (frame begin and end should be the same with "run_model")
+
+- # Example : 
+./calibration.sh 1 40 150 PifPaf f True
+```
+
+### 5. Contact
+
+- yangdi9860@gmail.com
+- 06 67 03 36 01
